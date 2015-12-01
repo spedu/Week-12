@@ -14,6 +14,22 @@ var markdownParser = function(data, encoding, done){
   done();
 };
 
+var limitParser = function(data, encoding, done){
+  if(this.limit === undefined){
+    this.push(data);
+    done();
+  } else {
+    if(this.limit > data.toString().length){
+      this.push(data);
+      this.limit - data.toString().length;
+    } else if(this.limit > 0 && this.limit < data.toString().length){
+      this.push(data.toString().substr(0, this.limit));
+      this.limit = 0;
+    }
+    done();
+  }
+};
+
 var logger = function(request, response){
   var date = (new Date()).toISOString();
   var output = date + " " + request.method + " " + response.statusCode + " " + request.url + " " + request.headers['user-agent'];
@@ -34,13 +50,21 @@ var handleRequest = function(request, response){
     return;
   }
 
-  if(request.url === '/lipsum'){
+  var purl = url.parse(request.url, true);
+
+  if(purl.pathname === '/lipsum'){
     var file = fs.createReadStream('lipsum.txt');
-    var parser = new Transform();
-    parser._transform = addBrsParser;
+    var brparser = new Transform();
+    brparser._transform = addBrsParser;
+
+    var limitparser = new Transform();
+    limitparser._transform = limitParser;
+    if(!isNaN(Number(purl.query.limit))){
+      limitparser.limit = purl.query.limit;
+    }
 
     response.writeHead(200, {'Content-Type': 'text/html'});
-    file.pipe(parser).pipe(response).on("finish", function(){
+    file.pipe(limitparser).pipe(brparser).pipe(response).on("finish", function(){
       response.end();
 
       logger(request, response);
