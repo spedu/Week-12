@@ -111,6 +111,31 @@ server.listen(7000, function(){
 
 *Note: make sure the parser gets reset every request, each transform is its own stream, and once it reaches the end of the stream, it's done. So it won't work more than once unless it's reset.*
 
+## Clean it up: Move logger to a module
+*together*
+
+1. Create a `logger.js` file
+2. Move the functionality to that file
+  * assign the functionality to `module.exports`
+  * give it `request` and `response` parameters
+  * now when you `require` that module, the variable will be a function
+3. Require that file in your app
+  * `var logger = require('./logger');`
+4. Use that `logger()` function
+
+## Clean it up: Move the Transform to a module
+*on your own*
+
+1. Create a `newlineTransformer.js` file
+2. Move the functionality to that file
+  * you want to return the `parser`
+  * because it uses `new` you're going to have to run the code every time
+  * so return a function and calling that function will execute the new
+3. Require that file in your app
+  * `var newlineTransformer = require('newlineTransformer');`
+4. Use the function in your `pipe` stream
+  * `.pipe(newlineTransformer())`
+
 ## Routing!
 *on your own*
 
