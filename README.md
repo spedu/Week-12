@@ -161,9 +161,16 @@ server.listen(7000, function(){
   * `var markdown = require( "markdown" ).markdown;`
   * it is used like this: `markdown.toHTML("I can't actually put real markdown in this example but let's pretend I did");`
 3. Create a markdown parser
-  * the same way we created the `addBrsParser`
+  * the same way we created the other transformers
+  * in a module
   * `this.push(markdown.toHTML(data.toString()));`
-4. Replace the `addBrsParser` in favor of this new parser for the '/sample' route
+4. Add the new parser to the markdown route
+
+## Do a route for the README
+*together*
+
+1. Copy everything you did for the markdown route
+2. Since they're doing the same thing, create a function to `handleMarkdown`
 
 ## Get a GET param
 
@@ -183,18 +190,20 @@ server.listen(7000, function(){
   * `if(purl.pathname === '/lipsum'){ ... `
 2. Get a "limit" parameter from the GET request
   * `purl.query.limit`
-3. Add a new limit parser
-4. Set the limit to the limit parser
-  * `limitparser = new Transform();`
-  * `limitparser.limit = purl.query.limit;`
+3. Add a new limit parser module
+4. Have the module take a limit param and pass that
+  * `module.exports = function(limit){ ... }`
+  * `var limitTransformer = require('./limitTransformer');`
 5. `pipe` the stream through that limit parser
-6. Using `this.limit` in the limit parser, track how many character you're letting through
+  * `.pipe(limitTransformer(limit)).`
+6. Using `limit` in the limit parser, track how many character you're letting through
   * *remember these are data chunks*
 
 *Example: (I'll bet you can do better!)*
+
 ```
-var limitParser = function(data, encoding, done){
-  if(this.limit === undefined){
+parser._transform = function(){
+  if(limit === undefined){
     this.push(data);
     done();
   } else {
