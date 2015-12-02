@@ -24,12 +24,6 @@
 
 *or you can use `file.on('data', function(chunk){ ... });`*
 
-## Nodemon
-
-1. `npm install -g nodemon`
-  * [Nodemon](http://nodemon.io/)
-2. Use `nodemon something.js` to run your node files and they will automatically be updated
-
 ## `pipe`
 
 1. Change the `console.log()` in the while chunk mess to be `process.stdout.write()`
@@ -61,6 +55,12 @@ server.listen(7000, function(){
 **Run server and check it in a browser**
 
 *It might be more clear if you move the anonymous function to a "handleRequest" method.*
+
+## Nodemon
+
+1. `npm install -g nodemon`
+  * [Nodemon](http://nodemon.io/)
+2. Use `nodemon something.js` to run your node files and they will automatically be updated
 
 ## Piping Lipsum
 *on your own*
