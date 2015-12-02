@@ -82,7 +82,7 @@ server.listen(7000, function(){
   *  `request.method`
 3. Get the url hit
   * `request.url`
-4. Get the `user-agent`
+4. Get the `user-agent` (from `request.headers`)
 
 ## Short out the `/favicon.ico`
 *together*
