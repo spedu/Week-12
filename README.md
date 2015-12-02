@@ -2,7 +2,12 @@
 *where "stuff" is probably best described as "streams"*
 *yes, I could have just said "streams", but it's too late now*
 
+## Initialize a Node app
+
+1. `npm init`
+
 ## Get a file from the file system
+*together*
 
 1. Create a file named read.js
 2. Add the 'fs' library to the file
@@ -16,6 +21,8 @@
   * `while(null !== (chunk = file.read())){ ... }`
 6. `console.log` out the chunks as you get them from `file.read()`
 7. Listen for the "end" event on `file` and `console.log` something
+
+*or you can use `file.on('data', function(chunk){ ... });`*
 
 ## Nodemon
 
