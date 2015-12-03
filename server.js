@@ -57,5 +57,5 @@ var server = http.createServer(function(request, response) {
 });
 
 server.listen(7000, function() {
- console.log("Listening on port 7000");
+  console.log("Listening on port 7000");
 });

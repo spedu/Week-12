@@ -3,6 +3,7 @@ var Transform = require('stream').Transform;
 module.exports = function(limit) {
   var parse = new Transform();
   parse._transform = function(data, encoding, done) { // data == chunk
+    console.log('chunk');
     if(limit === undefined) {
       this.push(data);
       done();
